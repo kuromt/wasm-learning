@@ -1,0 +1,1 @@
+/Users/kuromt/git/wasm-learning/generics-trait-lifetime/target/debug/generics-trait-lifetime: /Users/kuromt/git/wasm-learning/generics-trait-lifetime/src/lib.rs /Users/kuromt/git/wasm-learning/generics-trait-lifetime/src/main.rs
