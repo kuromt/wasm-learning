@@ -20,6 +20,11 @@ WASM
   - WASMはimportして実行する関数の詳細を把握していないので、unsafeとしてみなされる
   - 関数が返せるのは数値型のみ(i32/i64, f32/f64). 数字の意味を深く知る必要がある
 
+- WASMに触れる(9)
+  - WebAssemblyにRustを使う理由が[解説](https://moshg.github.io/rustwasm-book-ja/introduction.html)されている
+  - wasm_bindgenがJavascriptとRustの橋渡しをする
+    - JavascriptのオブジェクトをRustの構造体にマッピングするなど
+
 Rust
 ---
 
@@ -99,6 +104,10 @@ Rust
     - useを使うときは慣例として対象が別で定義されていることが分かるように、`xxx::yyy` として呼び出す形でuseを指定する
       - `yyy` だとローカルで定義されているのか別モジュールで定義されているのか見ただけで区別できない
 
+
+トラブルシュート
+---
+
 - vscodeにRustのextentionを入れてcargoでプロジェクトをつくるとvscodeでエラー
   - `vscode rustup not available` と `Couldn't start client Rust Language Server`
     - vscodeをreloadしても解決しない
@@ -146,6 +155,45 @@ Rust
     - これはRust Extentionと競合するらしいので、Rust Extentionを無効化
     - ときどきコード補完がきかなくなる. そのときはreload windowsを実行すると治る.
 
+- wasm-packをインストールしようとすると `wasm-pack-init: no precompiled binaries available for CPU architecture: arm64`
+  - このシェルがApple Siliconをサポートしていない？
+  - `cargo install wasm-pack` でインストールした
+
+- `wasm-pack build`を実行するとエラー
+  - メッセージ
+  ```
+  Error: no prebuilt wasm-opt binaries are available for this platform: Unrecognized target!
+  To disable `wasm-opt`, add `wasm-opt = false` to your package metadata in your `Cargo.toml`.
+  ```
+  - [rustwasm/wasm-pack#913](https://github.com/rustwasm/wasm-pack/issues/913)で報告されているが未解決
+    - 二種類のワークアラウンドが紹介されている
+      - Cargo.tomlでwasm-optを無効化する
+      - brewでwasm-optをインストールする(`brew install binarygen`)
+    - ワークアラウンドを採用するか判断するためにwasm-optが何かを調べる
+      - [WebAssembly/binarygen](https://github.com/WebAssembly/binaryen)によると"Loads WebAssembly and runs Binaryen IR passes on it."とのこと
+        - これがないと動かないのでは？
+      - 他のサイトをいくつか見ると、コンパイルの最適化のツールと理解. なくてもよさそう.
+    - brewでインストールするとcargoでインストールした他のパッケージを使うときに何が起こるかわからないので、ひとまず無効化してチュートリアルを進める
+      - チュートリアルでwasm-optが必須になったらまた考える
+
+- `wasm-game-of-life/pkg`の中で`npm link`を実行するとエラー
+  - sudoで実行する必要がある
+  - log
+  ```
+  $ sudo npm link
+  Password:
+  npm notice created a lockfile as package-lock.json. You should commit this file.
+  npm WARN wasm-game-of-life@0.1.0 No repository field.
+  npm WARN wasm-game-of-life@0.1.0 No license field.
+
+  up to date in 0.72s
+  found 0 vulnerabilities
+
+  /usr/local/lib/node_modules/wasm-game-of-life -> /Users/kuromt/git/wasm-learning/wasm-game-of-life/pkg
+  bookers:pkg kuromt$ pwd
+  /Users/kuromt/git/wasm-learning/wasm-game-of-life/pkg
+  ```
+
 疑問
 ---
 
@@ -155,6 +203,8 @@ Rust
     - ただ、javascript側もwasmが何の関数をもち、その関数の返り値が何を意味するかを把握した人しか書けない
         - pydocのようなwasmのdocが必要になる？
 
+- WASMの環境構築の[セットアップ](https://moshg.github.io/rustwasm-book-ja/game-of-life/setup.html)でwasm-packはcurlからシェル経由でインストールするように案内されるのに、cargo-generateはcargo installを使うのはなぜ？
+  - それぞれのGithubのリポジトリのREADME.mdに従っているとするなら納得
 
 資料
 ---
@@ -171,3 +221,4 @@ Rust
 7. [プログラミング言語Rust](https://doc.rust-jp.rs/the-rust-programming-language-ja/1.6/book/README.html)
 8. [The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/title-page.html#the-rust-programming-language-%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88)
 [WebAssembly 開発環境構築の本](https://wasm-dev-book.netlify.app/)
+9. [Rust and WebASsembly](https://moshg.github.io/rustwasm-book-ja/game-of-life/introduction.html)
