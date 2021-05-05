@@ -24,6 +24,8 @@ WASM
   - WebAssemblyにRustを使う理由が[解説](https://moshg.github.io/rustwasm-book-ja/introduction.html)されている
   - wasm_bindgenがJavascriptとRustの橋渡しをする
     - JavascriptのオブジェクトをRustの構造体にマッピングするなど
+  - javascriptからwasmのメモリにアクセスするモジュールは`memor`
+    - TOOD:　おそらく`wasm-pack build` で毎回生成されるであろう`xxx_bg`で定義されている
 
 Rust
 ---
@@ -193,6 +195,11 @@ Rust
   bookers:pkg kuromt$ pwd
   /Users/kuromt/git/wasm-learning/wasm-game-of-life/pkg
   ```
+
+- ブラウザにアクセスすると暫く何も表示されず、タイムアウトのような挙動をしたあとにエラーコード5が表示される
+  - ![](../images/error_1.png)
+  - ブラウザを変えても同じ状況
+  - TODO: ブラウザの開発者モードを開くための右クリックもできない. どこのログを見れば原因が表示されるかわからない
 
 疑問
 ---
