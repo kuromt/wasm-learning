@@ -26,6 +26,11 @@ WASM
     - JavascriptのオブジェクトをRustの構造体にマッピングするなど
   - javascriptからwasmのメモリにアクセスするモジュールは`memor`
     - TOOD:　おそらく`wasm-pack build` で毎回生成されるであろう`xxx_bg`で定義されている
+  - #[wasm_bindgen] トレイトで型に実装された関数がJavascriptから呼べるようになる
+  - wasm-packのテストは主要ブラウザとnodeごとのテストを実行できる
+    - `--chrome`, `--firefox`, `--safari`, `--node` オプションがある
+  - `$`は何の意味？
+    - logのマクロを定義するときに`( $( $t:tt )* ) `で使った
 
 Rust
 ---
