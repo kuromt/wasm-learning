@@ -25,7 +25,9 @@ pub struct Universe {
     cells: Vec<Cell>,
 }
 
+#[wasm_bindgen]
 impl Universe {
+
     fn get_index(&self, row: u32, column: u32) -> usize {
         (row * self.width + column) as usize
     }
@@ -46,10 +48,7 @@ impl Universe {
         }
         count
     }
-}
 
-#[wasm_bindgen]
-impl Universe {
     pub fn tick(&mut self) {
         let mut next = self.cells.clone();
 
