@@ -100,7 +100,7 @@ impl Universe {
                     (otherwise, _) => otherwise,
                 };
                 
-                log!("    it becomes {:?}", next_cell);
+                //log!("    it becomes {:?}", next_cell);
 
                 next[idx] = next_cell;
             }
